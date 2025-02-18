@@ -1,0 +1,60 @@
+import fs from "fs";
+import path from "path";
+import { remark } from "remark";
+import matter from "gray-matter";
+import html from "remark-html";
+
+const postDirectory = path.join(process.cwd(), "src/posts");
+
+export interface Post {
+  id: string;
+  contentHtml: string;
+  title: string;
+  date: string;
+  excerpt?: string;
+}
+
+export const getAllPosts = (): Omit<Post, "contentHtml">[] => {
+  const fileNames = fs.readdirSync(postDirectory);
+
+  return fileNames.map((fileName) => {
+    const id = fileName.replace(/\.md$/, "");
+
+    const fullPath = path.join(postDirectory, fileName);
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+
+    const matterResult = matter(fileContents);
+
+    return {
+      id,
+      title: matterResult.data.title,
+      date: matterResult.data.date
+        ? matterResult.data.date.toString()
+        : "Unknown Date",
+      excerpt: matterResult.data.excerpt || "",
+    };
+  });
+};
+
+export const getPostData = async (id: string): Promise<Post> => {
+  const fullPath = path.join(postDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+
+  const matterResult = matter(fileContents);
+
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content);
+
+  const contentHtml = processedContent.toString();
+
+  return {
+    id,
+    contentHtml,
+    title: matterResult.data.title,
+    date: matterResult.data.date
+      ? matterResult.data.date.toString()
+      : "Unknown Date",
+    excerpt: matterResult.data.excerpt || "",
+  };
+};
