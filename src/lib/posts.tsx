@@ -12,6 +12,7 @@ export interface Post {
   title: string;
   date: string;
   excerpt?: string;
+  categories?: Array<string>;
 }
 
 export const getAllPosts = (): Omit<Post, "contentHtml">[] => {
@@ -32,6 +33,7 @@ export const getAllPosts = (): Omit<Post, "contentHtml">[] => {
         ? matterResult.data.date.toString()
         : "Unknown Date",
       excerpt: matterResult.data.excerpt || "",
+      categories: matterResult.data.categories || [],
     };
   });
 };
@@ -58,3 +60,29 @@ export const getPostData = async (id: string): Promise<Post> => {
     excerpt: matterResult.data.excerpt || "",
   };
 };
+
+export const getPaginatedPosts = (pages: number, limit: number = 5) => {
+  const allPosts = getAllPosts();
+  const startIndex = (pages - 1) * limit;
+  const endIndex = startIndex + limit;
+  return {
+    posts: allPosts.slice(startIndex, endIndex),
+    totalPages: Math.ceil(allPosts.length / limit),
+  };
+};
+
+export function getAllCategories() {
+  const posts = getAllPosts();
+  const categories = new Set<string>();
+  posts.forEach((post) => {
+    if (post.categories) {
+      post.categories.forEach((category) => categories.add(category));
+    }
+  });
+  return Array.from(categories);
+}
+
+export function getPostsByCategory(category: string) {
+  const posts = getAllPosts();
+  return posts.filter((post) => post.categories?.includes(category));
+}

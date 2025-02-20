@@ -2,6 +2,8 @@
 title: "Getting Started with Next.js"
 date: "2024-03-21"
 excerpt: "Learn how to set up a Next.js project from scratch."
+categories: ["General", "Next"]
+author: "John Doe"
 ---
 
 Next.js is a powerful React framework that enables features like server-side rendering, static site generation, and API routes out of the box.

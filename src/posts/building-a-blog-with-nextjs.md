@@ -2,6 +2,8 @@
 title: "Building a Blog with Next.js"
 date: "2024-03-24"
 excerpt: "A step-by-step guide to building a blog using Next.js."
+categories: ["General", "Next"]
+author: "Patrik"
 ---
 
 In this post, I'll walk you through building a blog platform using Next.js.

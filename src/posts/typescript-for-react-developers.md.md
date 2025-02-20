@@ -2,6 +2,8 @@
 title: "TypeScript for React Developers"
 date: "2024-03-23"
 excerpt: "An introduction to using TypeScript with React."
+categories: ["General", "TypeScript"]
+author: "Ayush"
 ---
 
 TypeScript brings type safety to your React applications, helping you catch errors early and improve code quality.

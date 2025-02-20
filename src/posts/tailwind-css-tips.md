@@ -2,6 +2,8 @@
 title: "Tailwind CSS Tips for Beginners"
 date: "2024-03-22"
 excerpt: "A collection of useful tips for working with Tailwind CSS."
+categories: ["General", "Tailwind"]
+author: "John Doe"
 ---
 
 Tailwind CSS is a utility-first CSS framework that allows you to build custom designs directly in your markup.
