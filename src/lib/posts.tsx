@@ -13,6 +13,7 @@ export interface Post {
   date: string;
   excerpt?: string;
   categories?: Array<string>;
+  author?: string;
 }
 
 export const getAllPosts = (): Omit<Post, "contentHtml">[] => {
@@ -34,6 +35,7 @@ export const getAllPosts = (): Omit<Post, "contentHtml">[] => {
         : "Unknown Date",
       excerpt: matterResult.data.excerpt || "",
       categories: matterResult.data.categories || [],
+      author: matterResult.data.author || "",
     };
   });
 };
@@ -58,6 +60,8 @@ export const getPostData = async (id: string): Promise<Post> => {
       ? matterResult.data.date.toString()
       : "Unknown Date",
     excerpt: matterResult.data.excerpt || "",
+    categories: matterResult.data.categories || [],
+    author: matterResult.data.author || "",
   };
 };
 
@@ -85,4 +89,20 @@ export function getAllCategories() {
 export function getPostsByCategory(category: string) {
   const posts = getAllPosts();
   return posts.filter((post) => post.categories?.includes(category));
+}
+
+export function getAllAuthors() {
+  const posts = getAllPosts();
+  const authors = new Set<string>();
+  posts.forEach((post) => {
+    if (post.author) {
+      authors.add(post.author);
+    }
+  });
+  return Array.from(authors);
+}
+
+export function getPostsByAuthor(author: string) {
+  const posts = getAllPosts();
+  return posts.filter((post) => post.author === author);
 }

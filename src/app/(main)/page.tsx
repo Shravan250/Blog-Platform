@@ -1,5 +1,10 @@
 import Search from "@/components/Search";
-import { getAllCategories, getAllPosts, getPaginatedPosts } from "@/lib/posts";
+import {
+  getAllAuthors,
+  getAllCategories,
+  getAllPosts,
+  getPaginatedPosts,
+} from "@/lib/posts";
 import Link from "next/link";
 
 export default function Home({
@@ -20,7 +25,7 @@ export default function Home({
         <p className="text-gray-600">Sharing knowledge and experiences</p>
       </header>
 
-      <div className="mb-8">
+      <div className="flex items-center justify-center gap-4 mb-8">
         <Search />
       </div>
 
@@ -36,14 +41,50 @@ export default function Home({
         ))}
       </div>
 
+      <div className="flex flex-col items-center justify-center mb-8">
+        <h3 className="text-lg font-semibold mb-4">Authors</h3>
+        <div className="flex flex-wrap gap-2">
+          {getAllAuthors().map((author) => (
+            <Link
+              key={author}
+              href={`/authors/${encodeURIComponent(author)}`}
+              className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+            >
+              {author}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <section className="space-y-8">
-        {posts.map(({ id, title, date, excerpt }) => (
+        {posts.map(({ id, title, date, excerpt, categories, author }) => (
           <article key={id} className="border-b pb-6">
             <h2 className="text-2xl font-semibold mb-2">
               <a href={`/posts/${id}`} className="hover:text-blue-600">
                 {title}
               </a>
             </h2>
+            <div className="mb-2">
+              {author && (
+                <Link
+                  href={`/authors/${encodeURIComponent(author)}`}
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600"
+                >
+                  By {author}
+                </Link>
+              )}
+            </div>
+            <div className="flex gap-2 mb-8">
+              {categories?.map((category) => (
+                <Link
+                  key={category}
+                  href={`/categories/${category}`}
+                  className="px-1 py-1 bg-gray-200 rounded text-gray-500"
+                >
+                  {category}
+                </Link>
+              ))}
+            </div>
             <time className="text-sm text-gray-500">{date}</time>
             <p className="mt-2 text-gray-700">{excerpt}</p>
           </article>
